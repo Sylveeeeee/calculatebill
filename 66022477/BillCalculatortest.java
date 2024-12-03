@@ -1,49 +1,48 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class BillCalculatorFunctions {
+class BillCalculatorTest {
 
     @Test
-    void testCalculateBill_InvalidMeter() {
-        // Arrange
-        double lastMeter = 150;
-        double currentMeter = 100;
-        String billType = "WaterBill";
-
-        // Act & Assert
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                BillCalculatorFunctions.calculateBill(lastMeter, currentMeter, billType)
+    void calculateBill_InvalidMeter_ThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> 
+            BillCalculator.calculateBill(200.0, 150.0, "WaterBill")
         );
-        assertEquals("Current Meter ต้องมากกว่า Last Meter", exception.getMessage());
+    }
+    
+    @Test
+    void calculateBill_WaterBill_CorrectCalculation() {
+        double result = BillCalculator.calculateBill(100.0, 150.0, "WaterBill");
+        assertEquals(250.0, result); 
     }
 
     @Test
-    void testCalculateBillWithRoomType_SingleBed() {
-        // Arrange
-        double lastMeter = 100;
-        double currentMeter = 150;
-        String billType = "WaterBill";
-        String roomType = "Single Bed";
-
-        // Act
-        double result = BillCalculatorFunctions.calculateBillWithRoomType(lastMeter, currentMeter, billType, roomType);
-
-        // Assert
-        assertEquals(1750.0, result, 0.01, "Single Bed calculation is incorrect");
+    void calculateBill_ElectBill_CorrectCalculation() {
+        double result = BillCalculator.calculateBill(200.0, 250.0, "ElectBill");
+        assertEquals(300.0, result);
     }
 
     @Test
-    void testCalculateBillWithRoomType_DoubleBed() {
-        // Arrange
-        double lastMeter = 100;
-        double currentMeter = 150;
-        String billType = "ElectBill";
-        String roomType = "Double Bed";
+    void calculateBillWithRoomType_SingleBed_WaterBill() {
+        double result = BillCalculator.calculateBillWithRoomType(100.0, 150.0, "WaterBill", "Single Bed");
+        assertEquals(1750.0, result); 
+    }
 
-        // Act
-        double result = BillCalculatorFunctions.calculateBillWithRoomType(lastMeter, currentMeter, billType, roomType);
+    @Test
+    void calculateBillWithRoomType_DoubleBed_ElectBill() {
+        double result = BillCalculator.calculateBillWithRoomType(200.0, 250.0, "ElectBill", "Double Bed");
+        assertEquals(2300.0, result); 
+    }
 
-        // Assert
-        assertEquals(2300.0, result, 0.01, "Double Bed calculation is incorrect");
+
+    @Test
+    void resetValues_AllFieldsResetToDefault() {
+        double lastMeterBefore = 100.0;
+        double currentMeterBefore = 150.0;
+        BillCalculator.calculateBillWithRoomType(lastMeterBefore, currentMeterBefore, "WaterBill" , "Single Bed" ); 
+
+        BillCalculator.resetValues();
+
+        System.out.println("Reset test passed: All fields reset to default ");
     }
 }

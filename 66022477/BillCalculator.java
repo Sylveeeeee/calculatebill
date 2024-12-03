@@ -34,18 +34,4 @@ public class BillCalculator {
     public static void resetValues() {
 
     }
-
-    public static void main(String[] args) {
-        try {
-            double lastMeter = 200;
-            double currentMeter = 150;
-            String billType = "WaterBill";
-            String roomType = "Single Bed";
-            
-            double result = calculateBillWithRoomType(lastMeter, currentMeter, billType, roomType);
-            System.out.println("Total Bill: " + result);
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
 }
